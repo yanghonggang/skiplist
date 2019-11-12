@@ -23,8 +23,8 @@ int clock_gettime(int clk_id, struct timespec* t) {
 
 #include "skiplist.h"
 
-#define N 2 * 1024 * 1024
-// #define SKIPLIST_DEBUG
+#define N 16 // 2 * 1024 * 1024
+#define SKIPLIST_DEBUG
 
 int
 main(void)
@@ -49,7 +49,7 @@ main(void)
     srandom(time(NULL));
     clock_gettime(CLOCK_MONOTONIC, &start);
     for (i = 0; i < N; i++) {
-        int value = key[i] = (int)random();
+        int value = key[i] = (int)random() % 20;
         skiplist_insert(list, key[i], value);
     }
     clock_gettime(CLOCK_MONOTONIC, &end);
@@ -65,14 +65,14 @@ main(void)
         struct skipnode *node = skiplist_search(list, key[i]);
         if (node != NULL) {
             #ifdef SKIPLIST_DEBUG
-            printf("key:0x%08x value:0x%08x\n", node->key, node->value);
+            printf("%d ", node->key);
             #endif
         } else {
-            printf("Not found:0x%08x\n", key[i]);
+            printf("Not found:%d\n", key[i]);
         }
     }
     clock_gettime(CLOCK_MONOTONIC, &end);
-    printf("time span: %ldms\n", (end.tv_sec - start.tv_sec)*1000 + (end.tv_nsec - start.tv_nsec)/1000000);
+    printf("\ntime span: %ldms\n", (end.tv_sec - start.tv_sec)*1000 + (end.tv_nsec - start.tv_nsec)/1000000);
 
     /* Delete test */
     printf("Now remove all nodes...\n");

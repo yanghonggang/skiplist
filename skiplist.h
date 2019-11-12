@@ -235,8 +235,9 @@ static void skiplist_dump(struct skiplist *list)
                 printf("level %d:\n", i + 1);
                 skiplist_foreach(pos, end) {
                         node = list_entry(pos, struct skipnode, link[i]);
-                        printf("key:0x%08x value:0x%08x\n", node->key, node->value);
+                        printf("%d ", node->key);
                 }
+                printf("\n");
                 pos = &list->head[i];
                 pos--;
                 end--;
